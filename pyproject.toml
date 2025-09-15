@@ -1,0 +1,30 @@
+[project]
+name = "phoenix"
+version = "0.1.0"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "arize-phoenix-otel>=0.13.1",
+    "fastapi[standard]>=0.116.1",
+    "ipykernel>=6.30.1",
+    "llama-index-core>=0.14.1",
+    "openai>=1.107.2",
+    "openinference-instrumentation-llama-index>=4.3.5",
+    "openinference-instrumentation-openai>=0.1.32",
+    "opentelemetry-instrumentation-asyncio>=0.58b0",
+    "pydantic-settings>=2.10.1",
+    "ruff>=0.13.0",
+]
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle
+    "F",   # Pyflakes
+    "UP",  # pyupgrade
+    "B",   # flake8-bugbear
+    "SIM", # flake8-simplify
+    "I",   # isort
+    "RUF", # ruff
+]

@@ -1,0 +1,14 @@
+services:
+  phoenix:
+    image: arizephoenix/phoenix:latest
+    ports:
+      - 6006:6006  # PHOENIX_PORT
+      - 4317:4317  # PHOENIX_GRPC_PORT
+    volumes:
+      - phoenix_test_data:/mnt/data  # PHOENIX_WORKING_DIR
+    environment:
+      PHOENIX_WORKING_DIR: /mnt/data
+
+volumes:
+  phoenix_test_data:
+    driver: local
