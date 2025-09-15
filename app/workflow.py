@@ -5,11 +5,15 @@ from openai.types.chat import (
     ChatCompletionSystemMessageParam,
     ChatCompletionUserMessageParam,
 )
+from openinference.instrumentation import OITracer, TraceConfig
+from opentelemetry import trace
 
 # from opentelemetry import trace
 from pydantic import BaseModel, Field
 
-from app.config import settings, tracer
+from app.config import settings
+
+tracer = OITracer(trace.get_tracer(__name__), TraceConfig())
 
 
 class GuardrailOutput(BaseModel):
