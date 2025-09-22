@@ -1,20 +1,20 @@
 import logging
+from typing import Literal
 
 from fastapi import FastAPI
 
-from app import otel_config, phoenix_config
+from app import otel_config, phoenix_config, workflow_custom, workflow_llama
 from app.config import settings
-from app.workflow import DummyWorkflow, LLamaWorkflow
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
-if settings.tracer_method == "otel":
-    otel_config.set_tracer_provider()
-else:
-    phoenix_config.set_tracer_provider()
-
 
 app = FastAPI()
+
+if settings.tracer_method == "otel":
+    otel_config.set_tracer_provider(app)
+else:
+    phoenix_config.set_tracer_provider()
 
 
 @app.get("/")
@@ -23,8 +23,8 @@ async def home() -> str:
 
 
 @app.post("/chat/")
-async def chat_endpoint(user_message: str, type: str = "dummy") -> str:
-    wf_cls = DummyWorkflow if type == "dummy" else LLamaWorkflow
+async def chat_endpoint(user_question: str, type: Literal["custom", "llama"] = "custom") -> str:
+    wf_cls = workflow_custom.MyWorkflow if type == "custom" else workflow_llama.MyWorkflow
     workflow = wf_cls()
-    response = await workflow.run(user_message=user_message)
+    response = await workflow.run(user_question=user_question)
     return response

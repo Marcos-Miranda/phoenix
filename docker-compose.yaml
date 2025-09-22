@@ -1,5 +1,5 @@
 services:
-  phoenix:
+  oi-service:
     image: arizephoenix/phoenix:latest
     ports:
       - 6006:6006  # PHOENIX_PORT
@@ -8,6 +8,17 @@ services:
       - phoenix_test_data:/mnt/data  # PHOENIX_WORKING_DIR
     environment:
       PHOENIX_WORKING_DIR: /mnt/data
+    restart: unless-stopped
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:latest
+    ports:
+      - 8126:8126
+    volumes:
+      - ./otel-collector-config.yaml:/etc/otel-collector-config.yaml:ro
+    command: ["--config", "/etc/otel-collector-config.yaml"]
+    depends_on:
+      - oi-service
+    restart: unless-stopped
 
 volumes:
   phoenix_test_data:

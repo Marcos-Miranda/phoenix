@@ -1,0 +1,13 @@
+receivers:
+  datadog:
+    endpoint: 0.0.0.0:8126
+exporters:
+  otlp:
+    endpoint: "http://oi-service:4317"
+    tls:
+      insecure: true
+service:
+  pipelines:
+    traces:
+      receivers: [datadog]
+      exporters: [otlp]
